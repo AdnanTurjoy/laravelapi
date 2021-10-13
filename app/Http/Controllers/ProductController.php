@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -25,15 +26,10 @@ class ProductController extends Controller
     public function create(Request $req)
     {
         //
-        $product = new Product;
-        $product->name = $req->input('name');
-        $product->file_path=$req->file('file')->store('products');
-        $product->description = $req->input('description');
-        $product->price = $req->input('price');
-        $product->save();
-        // return $product;
+        
+       
 
-        return $product->all();
+        
     }
 
     /**
@@ -45,6 +41,25 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+       
+            if ($request->hasFile('file')) {
+                $image = $request->file('file');
+                $name = time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = public_path('/images');
+                $image->move($destinationPath, $name);
+                $product = new Product();
+                $product->name = $request->input('name');
+                $product->price = $request->input('price');
+                $product->description = $request->input('description');
+                $product->file_path= $name;
+                $product->save();
+                return response()->json('Successfully added');
+            }
+
+         
+        
+       
+       
     }
 
     /**
