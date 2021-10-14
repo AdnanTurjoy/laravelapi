@@ -92,9 +92,29 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request,$id)
     {
-        //
+        $product=Product::find($id);
+        // $product->description = $request->input('description');
+        // return $product->description;
+        
+        
+        if ($request->hasFile('file')) {
+            
+            $image = $request->file('file');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            
+            $product->name = $request->input('name');
+            $product->price = $request->input('price');
+            $product->description = $request->input('description');
+            $product->file_path= $name;
+            $product->save();
+            return response()->json('Successfully added');
+            
+            
+        }
     }
 
     /**
