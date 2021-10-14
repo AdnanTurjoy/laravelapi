@@ -106,5 +106,12 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+       $result= $product->delete();
+       if($result){
+           return ["result" =>"product has been deleted"];
+       }
+       else{
+        return ["result" =>"product not deleted"];
+       }
     }
 }
