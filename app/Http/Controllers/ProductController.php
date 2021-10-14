@@ -105,16 +105,21 @@ class ProductController extends Controller
             $name = time().'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $name);
-            
-            $product->name = $request->input('name');
-            $product->price = $request->input('price');
-            $product->description = $request->input('description');
             $product->file_path= $name;
-            $product->save();
-            return response()->json('Successfully added');
+            
             
             
         }
+        else{
+            $product->file_path=$product->file_path;
+        }
+            $product->name = $request->input('name');
+            $product->price = $request->input('price');
+            $product->description = $request->input('description');
+            
+            $product->save();
+            return response()->json('Successfully added');
+        
     }
 
     /**
