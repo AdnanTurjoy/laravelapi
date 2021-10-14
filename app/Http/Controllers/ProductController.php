@@ -114,4 +114,9 @@ class ProductController extends Controller
         return ["result" =>"product not deleted"];
        }
     }
+
+    public function singleProduct($id){
+        
+        return Product::find($id);
+    }
 }
